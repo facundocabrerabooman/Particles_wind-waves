@@ -8,7 +8,7 @@ Imd = imdilate(imbinarize(imopen(Im,st)),stdil);
 %% refine particle image
 Rp=sqrt(numel(find(Imd~=0)))/pi;
 
-Rmin = max(0.6*Rp,4);
+Rmin = max(1*Rp,4);
 Rmax = max(1.6*Rp,15);
 [C, R] = imfindcircles(Imd, cast([Rmin Rmax],class(Im)));
 if size(C,1) == 1
@@ -20,8 +20,16 @@ end
 Imp = immultiply(Im,cast(mask,class(Im)));
 Imt = immultiply(Im,cast(abs(1-mask),class(Im)));
 
-Imp = imgaussfilt(Imp,1);
+%Imp = imgaussfilt(Imp,1);
+st = strel('disk',4);
+Imt = imopen(Imt,st);
 Imt = imgaussfilt(Imt,1);
+
+st = strel('disk',8);
+Imt = imopen(Imt,st);
+Imp(Imp<1e4)=0;
+Imp = imgaussfilt(Imp,1);
+
 
 
 
