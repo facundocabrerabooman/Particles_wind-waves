@@ -1,3 +1,24 @@
+%% Blackout image
+
+cd('/Volumes/landau2/Particle_wind-waves/calibration_2_1_24/')
+
+im1 = imread('/Volumes/landau2/Particle_wind-waves/calibration_2_1_24/cam1.tiff');
+im1_black = uint16(zeros(1024,1280));
+im1_black(1:700,540:end) = im1(1:700,540:end);
+
+imwrite(uint16(im1_black),['Camera1_' num2str(1,'%05d') '.tif'])
+clf;imshow(im1_black)
+
+
+im2 = imread('/Volumes/landau2/Particle_wind-waves/calibration_2_1_24/cam2.tiff');
+im2_black = uint16(zeros(1024,1280));
+im2_black(300:750,600:1020) = im2(300:750,600:1020);
+
+imwrite(uint16(im2_black),['Camera2_' num2str(1,'%05d') '.tif'])
+clf;imshow(im2_black)
+
+
+
 %% Average and filter calibration images
 clfc
 
@@ -7,7 +28,7 @@ for frame=1:7
 %%%%%%%%%
 pathcalib = ['/Users/fcb/AuxFiles/calib_12-13-23/Camera' num2str(cam) filesep num2str(frame)];
 
-pathout = '/Users/fcb/AuxFiles/calib_12-13-23//';
+pathout = '/Users/fcb/AuxFiles/calib_12-13-23/';
 
 fname = ['cam' num2str(cam) '_frame_preproc_00000' num2str(frame)];
 

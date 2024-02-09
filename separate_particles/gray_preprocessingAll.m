@@ -3,7 +3,7 @@ clear
 clc
 
 % input
-fpath0 = '/Users/fcb/AuxFiles/Particles_wind&waves/dec14/';
+fpath0 = '/Volumes/landau2/Particle_wind-waves/base_case/';
 cd(fpath0)
 %Istart = 2; % better to ignore the 1st image
  
@@ -19,51 +19,48 @@ dfolders = [];
 
     image_list = dir([fpath filesep 'Camera1' filesep '*.tiff']);
     img_num = size(image_list,1);
-    
-    Istart=3;
-    Iend = 7000;
+    % 
+    % Istart = 2;
+    % Iend = img_num-100;
+    Istart = 2250;
+    Iend = 2500;
 
-    subfolders = fpath;
     preproc_dirp = [fpath0 filesep 'preproc' filesep 'preproc_particle'];
     mkdir(preproc_dirp)
     
     %%% get Backgrounds
     %cam 1
-    bkg1_originalSize = getBkg(subfolders,'Camera1',Istart,Iend,100,[]);
+    bkg1_originalSize = getBkg(fpath,'Camera1',Istart,Iend,5,[]);
     %cam2
-    bkg2_originalSize = getBkg(subfolders,'Camera2',Istart,Iend,100,[]);
+    bkg2_originalSize = getBkg(fpath,'Camera2',Istart,Iend,5,[]);
 
     counter = 0;
-    for k=5000:7000%Istart:Iend
-    %for k=Istart:Iend
+   
+    for k=Istart:Iend
         counter = counter+1;
         k/Iend
 
         %%% cam1
-        fname=[subfolders filesep 'Camera1' filesep 'frame_' num2str(k,'%06d') '.tiff'];
+        fname=[fpath filesep 'Camera1' filesep 'frame_' num2str(k,'%06d') '.tiff'];
         Im1_originalSize = imread(fname);
-        intensity_thr = 1e4;
-        [Im01,Im1t,~]=Facu_preprocessing(Im1_originalSize,intensity_thr,7,1,bkg1_originalSize);
+
+        intensity_thr = 5e2;
+        [Im01,Im1t,Im1p]=gray_preprocessing(Im1_originalSize,intensity_thr,7,2,bkg1_originalSize);
+
         fnameo = ['cam1_frame_preproc_' num2str(counter,'%06d') '.tiff'];
-        %imwrite(uint16(Im1p),[preproc_dirt filesep fnameo];
-        imwrite(uint16(Im1t),[preproc_dirp filesep fnameo]);
+        imwrite(uint16(Im1p),[preproc_dirp filesep fnameo]);
 
 
-
+ 
         %%% cam2
-        fname=[subfolders filesep 'Camera2' filesep 'frame_'  num2str(k,'%06d') '.tiff'];
+        fname=[fpath filesep 'Camera2' filesep 'frame_'  num2str(k,'%06d') '.tiff'];
         Im2_originalSize = imread(fname);
-        %         Im2 = cast(zeros(1080,1920),class(Im2_originalSize));
-        %         Im2(285:796,321:1600) = Im2_originalSize;
-        intensity_thr = 1e4;
-        [Im02,~,Im2p]=Facu_preprocessing(Im2_originalSize,intensity_thr,10,1,bkg2_originalSize);
+
+        intensity_thr = 1e3;
+        [Im02,~,Im2p]=gray_preprocessing(Im2_originalSize,intensity_thr,6,1,bkg2_originalSize);
+
         fnameo = ['cam2_frame_preproc_' num2str(counter,'%06d') '.tiff'];
         imwrite(uint16(Im2p),[preproc_dirp filesep fnameo]);
-%                figure(10);
-%                  subplot(2,1,1);imagesc(Im2_originalSize);axis equal
-%                  subplot(2,1,2);imagesc(Im2p);axis equal
-%                  pause(0.05)
-
 
     end
 
