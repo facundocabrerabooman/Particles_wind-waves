@@ -3,14 +3,14 @@ clear
 clc
 
 % input
-fpath0 = '/Volumes/landau2/Particle_wind-waves/base_case/';
+fpath0 = 'J:\Particle_wind-waves\base_case\';
 cd(fpath0)
 %Istart = 2; % better to ignore the 1st image
  
 %%
 fpath = [fpath0 filesep 'raw'];
 % get the folder contents
-addpath(genpath('/Users/fcb/Documents/GitHub/Particles_wind-waves'));
+addpath(genpath('C:\Users\meatlab1-admin\Documents\facundo\Particles_wind-waves'));
 %dfolders = FunSubfolder(fpath);
 dfolders = [];
 
@@ -23,7 +23,7 @@ dfolders = [];
     % Istart = 2;
     % Iend = img_num-100;
     Istart = 2250;
-    Iend = 2500;
+    Iend = img_num-10;
 
     preproc_dirp = [fpath0 filesep 'preproc' filesep 'preproc_particle'];
     mkdir(preproc_dirp)

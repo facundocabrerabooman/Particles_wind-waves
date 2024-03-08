@@ -20,7 +20,7 @@ for k = Istart : increment : Iend
         Im = Im+double(rgb2gray(demosaic(imread(fname),demosaicpattern)));
     else
         Im = Im+double((imread(fname)));
-    end
+        end
 end
 % figure;imagesc(Im/Nim)
 bkg = cast(Im/Nim,cc);
