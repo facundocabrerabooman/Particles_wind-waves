@@ -1,21 +1,20 @@
 clear;clc;close all
 
 % Set path were functions will be read from
-addpath(genpath('/Users/fcb/Documents/GitHub/Particle-laden-turbulence'));
+addpath(genpath('/Users/fcb/Documents/GitHub/Particles_wind-waves/'));
 
-fname = 'TrCer_1000_13_fullg_tracers';
+fname = 'basecase';
 
-%folderin = '/Volumes/landau1/Tracers/ddt_filtered_w10/';
-folderin = '/Volumes/landau1/Tracers/dat/';
+folderin = '/Users/fcb/Library/CloudStorage/GoogleDrive-facundo@pdx.edu/My Drive/Particles_Waves&Wind/PTV/exports/';
 folderout = folderin;
 cd(folderin)
 
-Fs=2990; % Frame rate
+Fs=500; % Frame rate
 
 %% Import data
 
 d = dat_to_mat(folderin, fname);
-%save(fname,'d','-v7.3')
+save(fname,'d','-v7.3')
 
 %% Track Particles (i.e. go from particle positions to trajectories)
 
@@ -77,8 +76,8 @@ savefig_custom([folderout 'filter_check_' fname],8,6,'fig')
 save(['filter_check_' fname filesep 'output_filtering.mat'],'s','m','w')
 end
 %%  Estimate filtered tracks, velocities and accelerations with optimal filter width
-wopt = 10;
-lopt = 30;
+wopt = 5; % STD of gaussian
+lopt = 15; % width = 3 x STD
 
 Fs = 2990;
 
@@ -90,4 +89,23 @@ Ine=find(arrayfun(@(X)(~isempty(X.Vx)),tracklong)==1);
 
 save(['trajs_' fname '.mat'],'Ine','tracklong','-v7.3')
 %save(['/Users/fcb/AuxFiles/trajs_' fname],'Ine','tracklong','-v7.3')
+
+%% Traj. graph
+
+clear color c
+xt=vertcat(tracklong.x);
+yt=vertcat(tracklong.y);
+zt=vertcat(tracklong.z);
+
+figure(10);clf
+
+plot3(xt,yt,zt,'.');hold on
+
+axis equal
+box on
+xlabel('mm')
+ylabel('mm')
+zlabel('mm')
+
+
 
