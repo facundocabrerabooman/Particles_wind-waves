@@ -3,9 +3,9 @@ clear;clc;close all
 % Set path were functions will be read from
 addpath(genpath('/Users/fcb/Documents/GitHub/Particles_wind-waves/'));
 
-fname = 'basecase';
+fname = 'waves';
 
-folderin = '/Users/fcb/Library/CloudStorage/GoogleDrive-facundo@pdx.edu/My Drive/Particles_Waves&Wind/PTV/exports/';
+folderin = '/Users/fcb/Library/CloudStorage/GoogleDrive-facundo@pdx.edu/My Drive/Particles_Waves&Wind/PTV/exports/waves';
 folderout = folderin;
 cd(folderin)
 
@@ -31,15 +31,17 @@ numFrames = 9e9;
 %% Only keep long tracks -- redundant if using track3d_fc_stb.m
 L = arrayfun(@(X)(numel(X.x)),traj);
 Ilong = find(L>=10);
+
+%% Set cool colors for plots
+mycolormap = mycolor('#063970','#e28743');%('#063970','#eeeee4','#e28743')
+color3 = [mycolormap(1,:);mycolormap((size(mycolormap,1)+1)/2,:);mycolormap(end,:)];
+color1 = '#476d76';
 %% Find proper filter width
 if 1==pi
 [s(1), m(1), w]=findFilterWidth_PTV(traj(Ilong),'x');
 [s(2), m(2), w]=findFilterWidth_PTV(traj(Ilong),'y');
 [s(3), m(3), w]=findFilterWidth_PTV(traj(Ilong),'z');
-%% Set cool colors for plots
-mycolormap = mycolor('#063970','#e28743');%('#063970','#eeeee4','#e28743')
-color3 = [mycolormap(1,:);mycolormap((size(mycolormap,1)+1)/2,:);mycolormap(end,:)];
-color1 = '#476d76';
+
 
 figure;
 yyaxis left
